@@ -19,13 +19,15 @@ function Auth({isModel = false}) {
             let name = User.displayName
             let email = User.email
             const result = await axios.post(ServerUrl + "/api/auth/google" , {name , email} , {withCredentials:true})
-            dispatch(setUserData(result.data))
-            
-
+            localStorage.setItem("token", result.data.token)
+            sessionStorage.setItem("token", result.data.token)
+            dispatch(setUserData(result.data.user))
 
             
         } catch (error) {
             console.log(error)
+              localStorage.removeItem("token")
+              sessionStorage.removeItem("token")
               dispatch(setUserData(null))
         }
     }
